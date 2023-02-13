@@ -17,6 +17,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         try (Connection connection = util.getConnection(); Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS `usersdb`.`users` (`id` INT NOT NULL AUTO_INCREMENT,`name` VARCHAR(45) NULL,`lastName` VARCHAR(45) NULL,`age` TINYINT(3) NULL,PRIMARY KEY (`id`));");
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -25,6 +26,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void dropUsersTable() {
         try (Connection connection = util.getConnection(); Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS Users");
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,6 +41,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2,lastName);
             preparedStatement.setByte(3,age);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,6 +53,7 @@ public class UserDaoJDBCImpl implements UserDao {
             PreparedStatement preparedStatement=connection.prepareStatement(queryString);
             preparedStatement.setLong(1,id);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,6 +70,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 tmpUser.setLastName(resultSet.getString(3));
                 tmpUser.setAge(resultSet.getByte(4));
                 result.add(tmpUser);
+                connection.commit();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,6 +81,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         try (Connection connection = util.getConnection(); Statement statement = connection.createStatement()) {
             statement.execute("DELETE FROM Users");
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
