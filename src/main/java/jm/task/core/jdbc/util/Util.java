@@ -1,5 +1,11 @@
 package jm.task.core.jdbc.util;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
 import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -7,26 +13,16 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
-
 public class Util {
-    private final String URL = "jdbc:mysql://localhost:3306/UsersDB";
-    private final String USERNAME = "root";
-    private final String PASSWORD = "root";
-
-    private Connection connection;
+    private static Connection connection;
 
     public Util() {
     }
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         Driver driver = new com.mysql.cj.jdbc.Driver();
         DriverManager.registerDriver(driver);
-        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/UsersDB", "root", "root");
         connection.setAutoCommit(false);
         return connection;
     }
@@ -49,7 +45,7 @@ public class Util {
 
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+                settings.put(Environment.HBM2DDL_AUTO, "");
 
                 configuration.setProperties(settings);
 
